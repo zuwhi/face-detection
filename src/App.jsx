@@ -102,13 +102,13 @@ function App() {
   };
 
   const cat = {
-    angry: "public/assets/angry.jpeg",
-    disgusted: "public/assets/jijik.jpeg",
-    fearful: "public/assets/takut.jpeg",
-    happy: "public/assets/happy.jpeg",
-    neutral: "public/assets/netral.jpeg",
-    sad: "public/assets/sad1.jpeg",
-    surprised: "public/assets/kaget.jpeg",
+    angry: "./assets/angry.jpeg",
+    disgusted: "./assets/jijik.jpeg",
+    fearful: "./assets/takut.jpeg",
+    happy: "./assets/happy.jpeg",
+    neutral: "./assets/netral.jpeg",
+    sad: "./assets/sad1.jpeg",
+    surprised: "./assets/kaget.jpeg",
   };
 
   const persentase = {};
