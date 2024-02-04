@@ -5,14 +5,18 @@ import ParticleBackground from "./ParticleBackground";
 
 function App() {
   const [umur, setUmur] = useState("");
+  const [newUmur, setNewUmur] = useState("");
   const [ekspresiUtama, setEkspresiUtama] = useState("");
   const [ekspresi, setEkspresi] = useState("");
   const videoRef = useRef();
   const canvasRef = useRef();
 
+  const [opsi, setOpsi] = useState();
+
   useEffect(() => {
     startVideo();
     loadModels();
+    setOpsi(emoticonTexts);
   }, []);
 
   const startVideo = () => {
@@ -77,7 +81,8 @@ function App() {
 
             // const ekspresiMain = Object.keys(expressions).filter((key) => expressions[key] > 0.5);
             // setEkspresi(ekspresiMain);
-            // setEkspresi(getDominantExpression(expressions));
+
+            setEkspresi(expressions);
             const drawBox = new faceapi.draw.DrawBox(box, { label });
             drawBox.draw(canvasRef.current);
           });
@@ -95,6 +100,18 @@ function App() {
     sad: "😢",
     surprised: "😲",
   };
+
+  const cat = {
+    angry: "src/assets/angry.jpeg",
+    disgusted: "src/assets/jijik.jpeg",
+    fearful: "src/assets/takut.jpeg",
+    happy: "src/assets/happy.jpeg",
+    neutral: "src/assets/netral.jpeg",
+    sad: "src/assets/sad1.jpeg",
+    surprised: "src/assets/kaget.jpeg",
+  };
+
+  const persentase = {};
 
   // console.log(ekspresi);
 
@@ -120,42 +137,97 @@ function App() {
           </div>
           <br />
           <div className="">
-            <h1 className="text-4xl font-bold font-poppins"> Ekspresi Anda :</h1>
-            <div className="w-full  flex flex-col  items-center">
-              {emoticonTexts[ekspresiUtama.key] && <p className="text-[14rem] "> {emoticonTexts[ekspresiUtama.key] || "😐"}</p>}
-              <p className="text-[2rem] ">{ekspresiUtama.key}</p>
-              <p className="text-[1rem]">{Math.floor(ekspresiUtama.value * 100) || "0"}%</p>
-            </div>
-            {/* <table className="text-3xl">
-              <thead></thead>
-              <tbody>
-                <tr className="text-yellow-500">
-                  <td>Netral</td>
-                  <td> 😐:</td>
-                  <td>{Math.floor(ekspresi.neutral * 100) || "0"}%</td>
-                </tr>
-                <tr className="text-green-500">
-                  <td>Bahagia</td>
-                  <td> 😊:</td>
-                  <td>{Math.floor(ekspresi.happy * 100) || "0"}%</td>
-                </tr>
-                <tr className="text-blue-500">
-                  <td>Sedih</td>
-                  <td> 😢:</td>
-                  <td>{Math.floor(ekspresi.sad * 100) || "0"}%</td>
-                </tr>
-                <tr className="text-red-500">
-                  <td>Marah</td>
-                  <td> 😡:</td>
-                  <td>{Math.floor(ekspresi.angry * 100) || "0"}%</td>
-                </tr>
-                <tr className="text-orange-500">
-                  <td>Kaget</td>
-                  <td> 😱:</td>
-                  <td>{Math.floor(ekspresi.surprised * 100) || "0"}%</td>
-                </tr>
-              </tbody>
-            </table> */}
+            {JSON.stringify(opsi) === JSON.stringify(persentase) ? (
+              <table className="text-4xl">
+                <thead></thead>
+                <tbody>
+                  <tr className="text-yellow-500 mb-10">
+                    <td>Netral</td>
+                    <td> : </td>
+                    <td> </td>
+                    <td>{Math.floor(ekspresi.neutral * 100) || "0"}%</td>
+                  </tr>
+                  <tr className="text-green-500 mb-3">
+                    <td>Bahagia</td>
+                    <td> : </td>
+                    <td> </td>
+                    <td>{Math.floor(ekspresi.happy * 100) || "0"}%</td>
+                  </tr>
+                  <tr className="text-blue-500 mb-3">
+                    <td>Sedih</td>
+                    <td> : </td>
+                    <td> </td>
+                    <td>{Math.floor(ekspresi.sad * 100) || "0"}%</td>
+                  </tr>
+                  <tr className="text-red-500 mb-3">
+                    <td>Marah</td>
+                    <td> : </td>
+                    <td> </td>
+                    <td>{Math.floor(ekspresi.angry * 100) || "0"}%</td>
+                  </tr>
+                  <tr className="text-orange-500 mb-3">
+                    <td>Kaget</td>
+                    <td> : </td>
+                    <td> </td>
+                    <td>{Math.floor(ekspresi.surprised * 100) || "0"}%</td>
+                  </tr>
+                </tbody>
+              </table>
+            ) : (
+              <div className="">
+                <h1 className="text-2xl font-bold font-poppins text-center"> Ekspresi Mu :</h1>
+                <div className="w-full  flex flex-col  items-center ">
+                  {JSON.stringify(opsi) === JSON.stringify(emoticonTexts)
+                    ? emoticonTexts[ekspresiUtama.key] && <p className="text-[14rem] "> {emoticonTexts[ekspresiUtama.key] || "😐"}</p>
+                    : cat[ekspresiUtama.key] && <img src={cat[ekspresiUtama.key]} className="my-8 w-[18rem] h-[18rem] object-cover" />}
+
+                  <p className="text-[2rem] ">{ekspresiUtama.key}</p>
+                  <p className="text-[1rem]">{Math.floor(ekspresiUtama.value * 100) || "0"}%</p>
+                </div>
+              </div>
+            )}
+
+            <button className="btn py-1 rotate-90 absolute top-5 right-5" onClick={() => document.getElementById("my_modal_2").showModal()}>
+              <svg width="18" height="4" viewBox="0 0 18 4" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 2C4 3.10457 3.10457 4 2 4C0.89543 4 0 3.10457 0 2C0 0.89543 0.89543 0 2 0C3.10457 0 4 0.89543 4 2Z" fill="black" />
+                <path d="M11 2C11 3.10457 10.1046 4 9 4C7.89543 4 7 3.10457 7 2C7 0.89543 7.89543 0 9 0C10.1046 0 11 0.89543 11 2Z" fill="black" />
+                <path d="M18 2C18 3.10457 17.1046 4 16 4C14.8954 4 14 3.10457 14 2C14 0.89543 14.8954 0 16 0C17.1046 0 18 0.89543 18 2Z" fill="black" />
+              </svg>
+            </button>
+            <dialog id="my_modal_2" className="modal">
+              <div className="modal-box w-96">
+                <h3 className="font-bold text-lg mb-5">Pilih Ekspresi :</h3>
+                <div className="flex justify-around">
+                  <button
+                    className={`btn ${JSON.stringify(opsi) === JSON.stringify(emoticonTexts) ? `btn-primary text-white` : ``}`}
+                    onClick={() => {
+                      setOpsi(emoticonTexts);
+                    }}
+                  >
+                    Emoticon
+                  </button>
+                  <button
+                    className={`btn ${JSON.stringify(opsi) === JSON.stringify(cat) ? `btn-primary text-white` : ``}`}
+                    onClick={() => {
+                      setOpsi(cat);
+                    }}
+                  >
+                    Cat Meme
+                  </button>
+                  <button
+                    className={`btn ${JSON.stringify(opsi) === JSON.stringify(persentase) ? `btn-primary text-white` : ``}`}
+                    onClick={() => {
+                      setOpsi(persentase);
+                    }}
+                  >
+                    Percen
+                  </button>
+                </div>
+              </div>
+              <form method="dialog" className="modal-backdrop">
+                <button>close</button>
+              </form>
+            </dialog>
           </div>
         </div>
       </div>
